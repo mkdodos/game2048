@@ -42,6 +42,17 @@ header p{
   width: 100px;
   height: 100px;
   border-radius: 6px;
-  background-color: #ccc063;
+  background-color: #ccc0b3;
+  position: absolute;
+}
+
+
+.number-cell{
+  font-family: Arial;
+  line-height: 100px;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 6px;
   position: absolute;
 }
