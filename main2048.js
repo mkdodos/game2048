@@ -121,7 +121,11 @@ $(document).keydown(function (event){
       break;
 
     case 39:
+      if(moveRight()){
         generateOneNumber();
+        isgameover();
+      }
+
       break;
   }
 
@@ -130,6 +134,36 @@ $(document).keydown(function (event){
 
 function isgameover(){
 
+}
+
+
+function moveRight(){
+  if(!canMoveRight(board))
+    return false;
+
+  for(var i=0;i<4;i++){
+    for(var j=2;j>=0;j--){//最右邊的格子開始看能否移
+      if(board[i][j]!=0){//不是0的數字才有需要移
+        for(var k=3;k>j;k--){//從最右邊開始找新位置
+          //新位置是0 且 原來位置到新位置間沒有障礙
+          if(board[i][k]==0 && noBlockHorizontal(i,j,k,board)){
+            showMoveAnimation(i,j,i,k);//移動位置
+            board[i][k]=board[i][j];//設定新位置的數字為原位置的數字
+            board[i][j]=0;//原位置的數字設為0
+          }
+          //新位置和原位置的數字相等 且 原來位置到新位置間沒有障礙
+          else if(board[i][k]==board[i][j] && noBlockHorizontal(i,j,k,board)){
+            showMoveAnimation(i,j,i,k);//移動位置
+            board[i][k]+=board[i][j];//設定新位置的數字和原位置的數字相加
+            board[i][j]=0;//原位置的數字設為0
+          }
+        }
+      }
+    }
+  }
+
+  setTimeout("updateBoardView()",200);
+  return true;
 }
 
 function moveLeft(){
@@ -151,7 +185,7 @@ function moveLeft(){
     for(j=1;j<4;j++){
       if(board[i][j]!=0){
         //所在位置的整列左方數字
-        for(k=0;k<j;k++){
+        for(k=0;k<j;k++){//從最左方開始看能否移動
           //等於0且沒有障礙
           if(board[i][k]==0 && noBlockHorizontal(i,k,j,board)){
             // move
