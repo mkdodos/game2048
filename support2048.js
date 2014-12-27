@@ -68,7 +68,7 @@ function canMoveLeft(board){
 
 function canMoveRight(board){
   for(var i=0;i<4;i++)
-    for(var j=2;j>=0;j--)//由最右欄(第3欄)開始判斷,然後2,1,0
+    for(var j=2;j>=0;j--)//由可以移動的最右欄(第3欄)開始判斷,然後2,1,0
       if( board[i][j] != 0 )//有存在數字的話
         if(board[i][j+1]==0 || board[i][j+1]==board[i][j])//右側數字為0或該數字和本身數字相等
           return true;
