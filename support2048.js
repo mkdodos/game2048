@@ -41,3 +41,43 @@ function getNumberColor(number){
 }
 
 
+function nospace(board){
+  for(var i=0;i<4;i++)
+    for(var j=0;j<4;j++)
+      if(board[i][j]==0)//有0的話代表還有空格
+        return false;
+
+  return true;
+
+}
+
+//判斷除了第一欄的數字以外,所有數字是否可移動
+//可移動的條件有二
+//該左側數字為0或該左側數字和本身數字相等
+function canMoveLeft(board){
+
+  for(var i=0;i<4;i++)
+    for(var j=1;j<4;j++)
+      if( board[i][j] != 0 )//有存在數字的話 important
+        if(board[i][j-1]==0 || board[i][j-1]==board[i][j])
+          return true;
+
+  return false;
+
+
+
+
+}
+
+//檢查指定欄位間該列沒有障礙物(不為0的數字)
+function noBlockHorizontal (row,col1,col2,board){
+  for(var i=col1+1;i<col2;i++){
+    if(board[row][i]!=0)
+      return false;
+  }
+
+  return true;
+
+
+}
+

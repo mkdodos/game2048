@@ -100,25 +100,84 @@ function generateOneNumber(){
 
 }
 
-function showNumber(i,j,randNumber){
-  var numberCell = $('#number-cell-' + i + "-" + j );
-  numberCell.css('background-color',getNumberBackgroundColor( randNumber ) );
-  numberCell.css('color',getNumberColor( randNumber ) );
-  numberCell.text( randNumber );
-  numberCell.animate({
-      width:"100px",
-      height:"100px",
-      top:getPosTop( i , j ),
-      left:getPosLeft( i , j )
-  },300);
+
+
+
+
+$(document).keydown(function (event){
+  switch(event.keyCode){
+    case 37:
+      if( moveLeft() ){
+        generateOneNumber();
+        isgameover();
+      }
+      break;
+
+    case 38:
+      if( moveUp() ){
+        generateOneNumber();
+        isgameover();
+      }
+      break;
+
+    case 39:
+        generateOneNumber();
+      break;
+  }
+
+});
+
+
+function isgameover(){
+
 }
 
-function nospace(board){
-  for(var i=0;i<4;i++)
-    for(var j=0;j<4;j++)
-      if(board[i][j]==0)//有0的話代表還有空格
-        return false;
+function moveLeft(){
 
+  // alert(canMoveLeft(board));
+  // return true;
+  if(!canMoveLeft(board)){
+    return false;
+  }
+
+  //moveLeft
+  //除了第一欄的數字
+  //針對左側的所有數字進行判斷
+  //條件:
+  //是否為空0
+  //數字相等
+  //障礙物
+  for(i=0;i<4;i++)
+    for(j=1;j<4;j++){
+      if(board[i][j]!=0){
+        //所在位置的整列左方數字
+        for(k=0;k<j;k++){
+          //等於0且沒有障礙
+          if(board[i][k]==0 && noBlockHorizontal(i,k,j,board)){
+            // move
+            showMoveAnimation(i,j,i,k);//從i-j 移動到 i-k
+            board[i][k]=board[i][j];//新位置的數字等於原位置的數字
+            board[i][j]=0;//原位置的數字變為0
+            continue;//繼續迴圈中下個元素
+          // 數字相等且沒有障礙
+          }else if(board[i][k]==board[i][j] && noBlockHorizontal(i,k,j,board)){
+            // move
+            showMoveAnimation(i,j,i,k);//從i-j 移動到 i-k
+            // add
+            board[i][k]+=board[i][j];//新位置的數字等於加上原位置的數字
+            board[i][j]=0;//原位置的數字變為0
+
+            continue;
+          }
+        }
+      }
+    }//for
+
+
+
+
+
+
+  setTimeout("updateBoardView()",200);
   return true;
-
 }
